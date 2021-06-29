@@ -1,8 +1,12 @@
 const fs = require('fs')
 const csv = require('csv-parser')
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+
+
+const srcFile = 'source.csv' //saves the source name 
+const newFileName = srcFile.substring(0, srcFile.length - 4); // separates teh name from the file extension 
 const csvWriter = createCsvWriter({
-    path: 'deduped.csv',
+    path: `${newFileName}-deduped.csv`, // uses the newFileName variable to add the source file name to the template for naming the new file
     header: [
         {id: 'URL', title: 'URL'},
         {id: 'Age', title: 'Age'},
@@ -10,10 +14,12 @@ const csvWriter = createCsvWriter({
     ]
 });
 
-const arr=[]
-const domainArr=[]
 
-fs.createReadStream('source.csv')
+const arr=[]  //original array with all the untouched objects to map
+const domainArr=[] //array with the parsed domains for count
+
+
+fs.createReadStream(srcFile)
 .pipe(csv({}))
 .on('data',(data)=>arr.push(data))
 .on('data',(data)=>domainArr.push(data.URL.split('/')[2]))

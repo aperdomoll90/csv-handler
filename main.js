@@ -24,7 +24,7 @@ fs.createReadStream('test.csv')
         return parts[2]
       })
       console.log(domainPart)
-    let uniqUsers = [...arr.reduce((map, obj) => map.set(!obj.URL==domainPart,obj),new Map()).values()]
+    let uniqUsers = [...arr.reduce((map, obj) => map.set(obj.URL,obj),new Map()).values()]
     
     csvWriter.writeRecords(uniqUsers)    
     .then(() => {
